@@ -1,4 +1,5 @@
 import client from "@/lib/prisma";
+import axios from "axios";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
@@ -49,10 +50,22 @@ export async function POST(request: Request) {
       );
     }
 
+    let n8nEmailStatus = "success";
+    try {
+      const n8nResponse = await axios.post(process.env.N8N_POST_URL!, newUser);
+      if (!n8nResponse) {
+        n8nEmailStatus = "error";
+      }
+    } catch (error) {
+      console.log(error);
+      n8nEmailStatus = "error";
+    }
+
     return NextResponse.json(
       {
         success: true,
         message: "User created successfully",
+        n8nEmailStatus: n8nEmailStatus,
       },
       { status: 201 }
     );
