@@ -48,7 +48,7 @@ const SignInPage = () => {
       await signIn(
         "credentials",
         {
-          redirect: true,
+          redirect: false,
           email: data.email,
           password: data.password,
         },
@@ -56,6 +56,8 @@ const SignInPage = () => {
           redirectTo: "/dashboard",
         }
       );
+
+      router.replace("/");
     } catch (error) {
       console.error(error);
       toast.error("Error", {
