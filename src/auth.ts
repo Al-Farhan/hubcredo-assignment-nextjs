@@ -1,6 +1,7 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import type { Adapter } from "next-auth/adapters";
 import bcrypt from "bcryptjs";
 import client from "./lib/prisma";
 
@@ -9,7 +10,7 @@ class InvalidLoginError extends CredentialsSignin {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(client),
+  adapter: PrismaAdapter(client) as Adapter,
   providers: [
     Credentials({
       credentials: {
